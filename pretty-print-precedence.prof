@@ -1,0 +1,231 @@
+	Sat Nov 10 01:43 2018 Time and Allocation Profiling Report  (Final)
+
+	   pretty-print-precedence +RTS -p -RTS
+
+	total time  =        0.01 secs   (11 ticks @ 1000 us, 1 processor)
+	total alloc =  22,522,656 bytes  (excludes profiling overheads)
+
+COST CENTRE               MODULE                  SRC                                           %time %alloc
+
+main                      Main                    AST.hs:(164,1)-(167,68)                        54.5   76.7
+randomIvalInteger.f.(...) System.Random           System/Random.hs:488:25-39                      9.1    0.0
+writeByteArray#           Data.Primitive.Types    Data/Primitive/Types.hs:172:138-209             9.1    0.0
+primitive                 Control.Monad.Primitive Control/Monad/Primitive.hs:94:3-16              9.1    1.8
+mash                      System.Random.TF.Gen    src/System/Random/TF/Gen.hs:(117,1)-(126,29)    9.1    1.1
+smartPrint'.alg           Main                    AST.hs:(102,3)-(105,70)                         9.1    0.7
+randomIvalIntegral        System.Random           System/Random.hs:462:1-71                       0.0    1.5
+randomIvalInteger         System.Random           System/Random.hs:(468,1)-(489,76)               0.0    3.2
+tfGenNext'                System.Random.TF.Gen    src/System/Random/TF/Gen.hs:(157,1)-(163,32)    0.0    2.0
+tfGenSplit                System.Random.TF.Gen    src/System/Random/TF/Gen.hs:(166,1)-(173,35)    0.0    2.5
+mkTFGen                   System.Random.TF.Gen    src/System/Random/TF/Gen.hs:(133,1)-(134,36)    0.0    2.5
+createBlock256            System.Random.TF.Gen    src/System/Random/TF/Gen.hs:(41,1)-(47,26)      0.0    2.8
+para.p                    Data.Functor.Foldable   Data/Functor/Foldable.hs:162:20-57              0.0    1.1
+
+
+                                                                                                                                    individual      inherited
+COST CENTRE                              MODULE                    SRC                                          no.      entries  %time %alloc   %time %alloc
+
+MAIN                                     MAIN                      <built-in>                                   1548          0    0.0    0.0   100.0  100.0
+ CAF                                     GHC.Conc.Signal           <entire-module>                              1647          0    0.0    0.0     0.0    0.0
+ CAF                                     GHC.IO.Encoding           <entire-module>                              1629          0    0.0    0.0     0.0    0.0
+ CAF                                     GHC.IO.Encoding.Iconv     <entire-module>                              1627          0    0.0    0.0     0.0    0.0
+ CAF                                     GHC.IO.Handle.FD          <entire-module>                              1618          0    0.0    0.2     0.0    0.2
+ CAF                                     GHC.IO.Handle.Text        <entire-module>                              1616          0    0.0    0.0     0.0    0.0
+ CAF:$fArbitraryProp_$carbitrary         Main                      AST.hs:135:3-11                              3067          0    0.0    0.0     0.0    0.0
+  arbitrary                              Main                      AST.hs:(135,3)-(138,26)                      3158          1    0.0    0.0     0.0    0.0
+   oneof                                 Test.QuickCheck.Gen       Test/QuickCheck/Gen.hs:(168,1)-(169,47)      3159          1    0.0    0.0     0.0    0.0
+    >>=                                  Test.QuickCheck.Gen       Test/QuickCheck/Gen.hs:(57,3)-(63,5)         3160          1    0.0    0.0     0.0    0.0
+    choose                               Test.QuickCheck.Gen       Test/QuickCheck/Gen.hs:115:1-59              3173          1    0.0    0.0     0.0    0.0
+ CAF:$fRandomGenTFGen0_$csplit           System.Random.TF.Gen      src/System/Random/TF/Gen.hs:254:3-7          1923          0    0.0    0.0     0.0    0.0
+  split                                  System.Random.TF.Gen      src/System/Random/TF/Gen.hs:254:3-21         3122          1    0.0    0.0     0.0    0.0
+ CAF:$fRandomGenTFGen_$cnext             System.Random.TF.Gen      src/System/Random/TF/Gen.hs:176:3-6          1930          0    0.0    0.0     0.0    0.0
+  next                                   System.Random.TF.Gen      src/System/Random/TF/Gen.hs:176:3-19         3194          1    0.0    0.0     0.0    0.0
+ CAF:$fRandomGenTFGen_$csplit            System.Random.TF.Gen      src/System/Random/TF/Gen.hs:180:3-7          1924          0    0.0    0.0     0.0    0.0
+  split                                  System.Random.TF.Gen      src/System/Random/TF/Gen.hs:180:3-20         3120          1    0.0    0.0     0.0    0.0
+ CAF:gf_rqaf                             Main                      <no location info>                           3064          0    0.0    0.0     0.0    0.0
+  arbitrary                              Main                      AST.hs:(135,3)-(138,26)                      3225          0    0.0    0.0     0.0    0.0
+   fmap                                  Test.QuickCheck.Gen       Test/QuickCheck/Gen.hs:(46,3)-(47,29)        3226          1    0.0    0.0     0.0    0.0
+ CAF:initTFGen1                          System.Random.TF.Init     <no location info>                           1898          0    0.0    0.0     0.0    0.0
+  initTFGen                              System.Random.TF.Init     src/System/Random/TF/Init.hs:(66,1)-(72,22)  3105          1    0.0    0.0     0.0    0.0
+ CAF:initTFGen2                          System.Random.TF.Init     <no location info>                           1896          0    0.0    0.0     0.0    0.0
+  mkSeedTime                             System.Random.TF.Init     src/System/Random/TF/Init.hs:(33,1)-(45,25)  3107          1    0.0    0.0     0.0    0.0
+ CAF:lvl10_rqah                          Main                      <no location info>                           3065          0    0.0    0.0     0.0    0.0
+  arbitrary                              Main                      AST.hs:(135,3)-(138,26)                      3216          0    0.0    0.0     0.0    0.0
+   fmap                                  Test.QuickCheck.Gen       Test/QuickCheck/Gen.hs:(46,3)-(47,29)        3217          1    0.0    0.0     0.0    0.0
+ CAF:lvl13_rqak                          Main                      <no location info>                           3066          0    0.0    0.0     0.0    0.0
+  arbitrary                              Main                      AST.hs:(135,3)-(138,26)                      3219          0    0.0    0.0     0.0    0.0
+   <*>                                   Test.QuickCheck.Gen       Test/QuickCheck/Gen.hs:51:3-36               3220          1    0.0    0.0     0.0    0.0
+    >>=                                  Test.QuickCheck.Gen       Test/QuickCheck/Gen.hs:(57,3)-(63,5)         3221          1    0.0    0.0     0.0    0.0
+ CAF:lvl20_rqau                          Main                      <no location info>                           3078          0    0.0    0.0     0.0    0.0
+  smartPrint                             Main                      AST.hs:(56,1)-(73,21)                        3249          0    0.0    0.0     0.0    0.0
+   smartPrint.go                         Main                      AST.hs:(59,3)-(62,68)                        3250          0    0.0    0.0     0.0    0.0
+ CAF:lvl8_rqae                           Main                      <no location info>                           3063          0    0.0    0.0     0.0    0.0
+  arbitrary                              Main                      AST.hs:(135,3)-(138,26)                      3227          0    0.0    0.0     0.0    0.0
+   return                                Test.QuickCheck.Gen       Test/QuickCheck/Gen.hs:(54,3)-(55,21)        3228          1    0.0    0.0     0.0    0.0
+ CAF:main1                               Main                      <no location info>                           3086          0    0.0    0.0     0.0    0.0
+  main                                   Main                      AST.hs:(164,1)-(167,68)                      3096          1    0.0    0.0     0.0    0.0
+ CAF:main_ds1                            Main                      <no location info>                           3085          0    0.0    0.0     0.0    0.0
+  main                                   Main                      AST.hs:(164,1)-(167,68)                      3109          0    0.0    0.0     0.0    0.0
+   infiniteList                          Test.QuickCheck.Arbitrary Test/QuickCheck/Arbitrary.hs:1416:1-39       3110          1    0.0    0.0     0.0    0.0
+    infiniteListOf                       Test.QuickCheck.Gen       Test/QuickCheck/Gen.hs:239:1-42              3111          1    0.0    0.0     0.0    0.0
+     <*>                                 Test.QuickCheck.Gen       Test/QuickCheck/Gen.hs:51:3-36               3112          1    0.0    0.0     0.0    0.0
+      >>=                                Test.QuickCheck.Gen       Test/QuickCheck/Gen.hs:(57,3)-(63,5)         3113          1    0.0    0.0     0.0    0.0
+     fmap                                Test.QuickCheck.Gen       Test/QuickCheck/Gen.hs:(46,3)-(47,29)        3147          1    0.0    0.0     0.0    0.0
+ CAF:newQCGen1                           Test.QuickCheck.Random    <no location info>                           1936          0    0.0    0.0     0.0    0.0
+  newQCGen                               Test.QuickCheck.Random    Test/QuickCheck/Random.hs:80:1-31            3099          1    0.0    0.0     0.0    0.0
+ CAF:newQCGen2                           Test.QuickCheck.Random    <no location info>                           1933          0    0.0    0.0     0.0    0.0
+  newTheGen                              Test.QuickCheck.Random    Test/QuickCheck/Random.hs:18:1-20            3101          1    0.0    0.0     0.0    0.0
+ CAF:newTFGen1                           System.Random.TF.Init     <no location info>                           1901          0    0.0    0.0     0.0    0.0
+  newTFGen                               System.Random.TF.Init     src/System/Random/TF/Init.hs:82:1-43         3102          1    0.0    0.0     0.0    0.0
+ CAF:oneof1                              Test.QuickCheck.Gen       <no location info>                           1970          0    0.0    0.0     0.0    0.0
+  oneof                                  Test.QuickCheck.Gen       Test/QuickCheck/Gen.hs:(168,1)-(169,47)      3177          0    0.0    0.0     0.0    0.0
+   choose                                Test.QuickCheck.Gen       Test/QuickCheck/Gen.hs:115:1-59              3178          0    0.0    0.0     0.0    0.0
+    choose.\                             Test.QuickCheck.Gen       Test/QuickCheck/Gen.hs:115:29-58             3179          0    0.0    0.0     0.0    0.0
+     choose.\.(...)                      Test.QuickCheck.Gen       Test/QuickCheck/Gen.hs:115:33-53             3180          0    0.0    0.0     0.0    0.0
+      randomR                            System.Random             System/Random.hs:345:34-61                   3181          1    0.0    0.0     0.0    0.0
+ CAF:p2_rqat                             Main                      <no location info>                           3077          0    0.0    0.0     0.0    0.0
+  smartPrint                             Main                      AST.hs:(56,1)-(73,21)                        3251          0    0.0    0.0     0.0    0.0
+   smartPrint.go                         Main                      AST.hs:(59,3)-(62,68)                        3252          0    0.0    0.0     0.0    0.0
+ CAF:propDepth                           Main                      AST.hs:141:1-9                               3081          0    0.0    0.0     0.0    0.0
+  propDepth                              Main                      AST.hs:(141,1)-(145,39)                      3150          1    0.0    0.0     0.0    0.0
+   cata                                  Data.Functor.Foldable     Data/Functor/Foldable.hs:159:3-43            3151          1    0.0    0.0     0.0    0.0
+ CAF:propDepth_c                         Main                      <no location info>                           3080          0    0.0    0.0     0.0    0.0
+  propDepth                              Main                      AST.hs:(141,1)-(145,39)                      3152          0    0.0    0.0     0.0    0.0
+   cata                                  Data.Functor.Foldable     Data/Functor/Foldable.hs:159:3-43            3153          0    0.0    0.0     0.0    0.0
+    cata.c                               Data.Functor.Foldable     Data/Functor/Foldable.hs:159:20-43           3154          1    0.0    0.0     0.0    0.0
+ CAF:q_rlac                              System.Random             System/Random.hs:481:8                       1707          0    0.0    0.0     0.0    0.0
+  randomIvalInteger                      System.Random             System/Random.hs:(468,1)-(489,76)            3187          0    0.0    0.0     0.0    0.0
+   randomIvalInteger.q                   System.Random             System/Random.hs:481:8-15                    3188          1    0.0    0.0     0.0    0.0
+ CAF:smartPrint                          Main                      AST.hs:56:1-10                               3079          0    0.0    0.0     0.0    0.0
+  smartPrint                             Main                      AST.hs:(56,1)-(73,21)                        3244          1    0.0    0.0     0.0    0.0
+ CAF:smartPrint'                         Main                      AST.hs:99:1-11                               3084          0    0.0    0.0     0.0    0.0
+  smartPrint'                            Main                      AST.hs:(99,1)-(116,21)                       3254          1    0.0    0.0     0.0    0.0
+   para                                  Data.Functor.Foldable     Data/Functor/Foldable.hs:162:3-57            3255          1    0.0    0.0     0.0    0.0
+ CAF:smartPrint'6                        Main                      <no location info>                           3082          0    0.0    0.0     0.0    0.0
+  smartPrint'                            Main                      AST.hs:(99,1)-(116,21)                       3262          0    0.0    0.0     0.0    0.0
+   smartPrint'.alg                       Main                      AST.hs:(102,3)-(105,70)                      3263          0    0.0    0.0     0.0    0.0
+ CAF:smartPrint'_p                       Main                      <no location info>                           3083          0    0.0    0.0     0.0    0.0
+  smartPrint'                            Main                      AST.hs:(99,1)-(116,21)                       3264          0    0.0    0.0     0.0    0.0
+   smartPrint'.alg                       Main                      AST.hs:(102,3)-(105,70)                      3265          0    0.0    0.0     0.0    0.0
+ CAF:smartPrint'_s                       Main                      <no location info>                           3069          0    0.0    0.0     0.0    0.0
+ CAF:smartPrint'_s1                      Main                      <no location info>                           3071          0    0.0    0.0     0.0    0.0
+ CAF:theTFGen                            System.Random.TF.Init     src/System/Random/TF/Init.hs:86:1-8          1900          0    0.0    0.0     0.0    0.0
+  theTFGen                               System.Random.TF.Init     src/System/Random/TF/Init.hs:(86,1)-(88,15)  3104          1    0.0    0.0     0.0    0.0
+   initTFGen                             System.Random.TF.Init     src/System/Random/TF/Init.hs:(66,1)-(72,22)  3106          0    0.0    0.0     0.0    0.0
+    seedTFGen                            System.Random.TF.Gen      src/System/Random/TF/Gen.hs:(184,1)-(187,9)  3130          1    0.0    0.0     0.0    0.0
+     createBlock256                      System.Random.TF.Gen      src/System/Random/TF/Gen.hs:(41,1)-(47,26)   3131          1    0.0    0.0     0.0    0.0
+      primitive                          Control.Monad.Primitive   Control/Monad/Primitive.hs:94:3-16           3132          6    0.0    0.0     0.0    0.0
+       writeByteArray#                   Data.Primitive.Types      Data/Primitive/Types.hs:172:138-209          3133          4    0.0    0.0     0.0    0.0
+     mkTFGen                             System.Random.TF.Gen      src/System/Random/TF/Gen.hs:(133,1)-(134,36) 3134          1    0.0    0.0     0.0    0.0
+    mkSeedTime                           System.Random.TF.Init     src/System/Random/TF/Init.hs:(33,1)-(45,25)  3108          0    0.0    0.0     0.0    0.0
+     mkSeedTime.c1                       System.Random.TF.Init     src/System/Random/TF/Init.hs:44:7-27         3129          1    0.0    0.0     0.0    0.0
+     mkSeedTime.d1                       System.Random.TF.Init     src/System/Random/TF/Init.hs:42:7-27         3127          1    0.0    0.0     0.0    0.0
+     mkSeedTime.day                      System.Random.TF.Init     src/System/Random/TF/Init.hs:40:7-47         3128          1    0.0    0.0     0.0    0.0
+     mkSeedTime.daytime                  System.Random.TF.Init     src/System/Random/TF/Init.hs:36:7-46         3125          1    0.0    0.0     0.0    0.0
+     mkSeedTime.t1                       System.Random.TF.Init     src/System/Random/TF/Init.hs:38:7-43         3124          1    0.0    0.0     0.0    0.0
+     mkSeedTime.t2                       System.Random.TF.Init     src/System/Random/TF/Init.hs:39:7-45         3126          1    0.0    0.0     0.0    0.0
+ CAF:x_rqab                              Main                      <no location info>                           3062          0    0.0    0.0     0.0    0.0
+ main                                    Main                      AST.hs:(164,1)-(167,68)                      3097          0   54.5   76.7   100.0   99.8
+  generate                               Test.QuickCheck.Gen       Test/QuickCheck/Gen.hs:(124,1)-(126,20)      3098          1    0.0    0.0     0.0    0.0
+   newQCGen                              Test.QuickCheck.Random    Test/QuickCheck/Random.hs:80:1-31            3100          0    0.0    0.0     0.0    0.0
+    newTFGen                             System.Random.TF.Init     src/System/Random/TF/Init.hs:82:1-43         3103          0    0.0    0.0     0.0    0.0
+     split                               System.Random.TF.Gen      src/System/Random/TF/Gen.hs:254:3-21         3123          0    0.0    0.0     0.0    0.0
+      tfGenSplit                         System.Random.TF.Gen      src/System/Random/TF/Gen.hs:(166,1)-(173,35) 3135          1    0.0    0.0     0.0    0.0
+       mkTFGen                           System.Random.TF.Gen      src/System/Random/TF/Gen.hs:(133,1)-(134,36) 3138          1    0.0    0.0     0.0    0.0
+       tfGenSplit.b''                    System.Random.TF.Gen      src/System/Random/TF/Gen.hs:173:3-35         3137          1    0.0    0.0     0.0    0.0
+       tfGenSplit.bi'                    System.Random.TF.Gen      src/System/Random/TF/Gen.hs:171:3-15         3139          1    0.0    0.0     0.0    0.0
+       tfGenSplit.maxb                   System.Random.TF.Gen      src/System/Random/TF/Gen.hs:170:3-11         3136          1    0.0    0.0     0.0    0.0
+  recursion_schemes                      Main                      AST.hs:167:53-68                             3253          1    0.0    0.0     9.1    1.8
+   smartPrint'                           Main                      AST.hs:(99,1)-(116,21)                       3256          0    0.0    0.0     9.1    1.8
+    para                                 Data.Functor.Foldable     Data/Functor/Foldable.hs:162:3-57            3257          0    0.0    0.0     9.1    1.8
+     para.p                              Data.Functor.Foldable     Data/Functor/Foldable.hs:162:20-57           3258       2233    0.0    1.1     9.1    1.8
+      smartPrint'.alg                    Main                      AST.hs:(102,3)-(105,70)                      3259       2233    9.1    0.7     9.1    0.8
+       smartPrint'.precParens            Main                      AST.hs:(113,3)-(116,21)                      3260       2232    0.0    0.1     0.0    0.1
+        smartPrint'.precedence           Main                      AST.hs:(108,3)-(110,24)                      3261       4464    0.0    0.0     0.0    0.0
+  vanilla_recursion                      Main                      AST.hs:166:53-68                             3243          1    0.0    0.0     0.0    0.8
+   smartPrint                            Main                      AST.hs:(56,1)-(73,21)                        3245          0    0.0    0.0     0.0    0.8
+    smartPrint.go                        Main                      AST.hs:(59,3)-(62,68)                        3246       2233    0.0    0.7     0.0    0.8
+     smartPrint.precParens               Main                      AST.hs:(70,3)-(73,21)                        3247       2232    0.0    0.1     0.0    0.1
+      smartPrint.precedence              Main                      AST.hs:(65,3)-(67,23)                        3248       4464    0.0    0.0     0.0    0.0
+  infiniteList                           Test.QuickCheck.Arbitrary Test/QuickCheck/Arbitrary.hs:1416:1-39       3114          0    0.0    0.0    36.4   20.4
+   infiniteListOf                        Test.QuickCheck.Gen       Test/QuickCheck/Gen.hs:239:1-42              3115          0    0.0    0.0    36.4   20.4
+    fmap                                 Test.QuickCheck.Gen       Test/QuickCheck/Gen.hs:(46,3)-(47,29)        3148        849    0.0    0.2    36.4   20.4
+     fmap.\                              Test.QuickCheck.Gen       Test/QuickCheck/Gen.hs:47:20-28              3149       2462    0.0    0.5    36.4   20.2
+      arbitrary                          Main                      AST.hs:(135,3)-(138,26)                      3161          0    0.0    0.0    36.4   19.8
+       oneof                             Test.QuickCheck.Gen       Test/QuickCheck/Gen.hs:(168,1)-(169,47)      3162          0    0.0    0.0    36.4   19.8
+        >>=                              Test.QuickCheck.Gen       Test/QuickCheck/Gen.hs:(57,3)-(63,5)         3163          0    0.0    0.0    27.3   11.1
+         >>=.\                           Test.QuickCheck.Gen       Test/QuickCheck/Gen.hs:(59,7)-(62,20)        3164       3311    0.0    0.0    27.3   11.1
+          >>=.\.(...)                    Test.QuickCheck.Gen       Test/QuickCheck/Gen.hs:61:15-35              3172       3311    0.0    0.1     0.0    0.2
+           <*>.\                         Test.QuickCheck.Gen       Test/QuickCheck/Gen.hs:51:28-36              3224        849    0.0    0.1     0.0    0.1
+           <*>                           Test.QuickCheck.Gen       Test/QuickCheck/Gen.hs:51:3-36               3235          0    0.0    0.0     0.0    0.0
+           return                        Test.QuickCheck.Gen       Test/QuickCheck/Gen.hs:(54,3)-(55,21)        3232          0    0.0    0.0     0.0    0.0
+            return.\                     Test.QuickCheck.Gen       Test/QuickCheck/Gen.hs:55:20                 3233         94    0.0    0.0     0.0    0.0
+          >>=.\.m'                       Test.QuickCheck.Gen       Test/QuickCheck/Gen.hs:61:15-35              3171       3311    0.0    0.0     0.0    0.0
+          split                          Test.QuickCheck.Random    Test/QuickCheck/Random.hs:(71,3)-(73,38)     3165       3311    0.0    0.0    27.3   10.9
+           split                         System.Random.TF.Gen      src/System/Random/TF/Gen.hs:180:3-20         3166          0    0.0    0.4    27.3   10.9
+            tfGenSplit                   System.Random.TF.Gen      src/System/Random/TF/Gen.hs:(166,1)-(173,35) 3169       3311    0.0    2.5    27.3   10.5
+             mkTFGen                     System.Random.TF.Gen      src/System/Random/TF/Gen.hs:(133,1)-(134,36) 3196       5758    0.0    2.4    27.3    8.0
+              mash                       System.Random.TF.Gen      src/System/Random/TF/Gen.hs:(117,1)-(126,29) 3203       2462    9.1    1.0    27.3    5.5
+               primitive                 Control.Monad.Primitive   Control/Monad/Primitive.hs:94:3-16           3207       4924    9.1    0.9     9.1    0.9
+               createBlock256            System.Random.TF.Gen      src/System/Random/TF/Gen.hs:(41,1)-(47,26)   3204       2462    0.0    2.7     9.1    3.6
+                primitive                Control.Monad.Primitive   Control/Monad/Primitive.hs:94:3-16           3205      14772    0.0    0.9     9.1    0.9
+                 writeByteArray#         Data.Primitive.Types      Data/Primitive/Types.hs:172:138-209          3206       9848    9.1    0.0     9.1    0.0
+             tfGenSplit.maxb             System.Random.TF.Gen      src/System/Random/TF/Gen.hs:170:3-11         3170       3311    0.0    0.0     0.0    0.0
+             tfGenSplit.bi'              System.Random.TF.Gen      src/System/Random/TF/Gen.hs:171:3-15         3197       3260    0.0    0.0     0.0    0.0
+             tfGenSplit.b''              System.Random.TF.Gen      src/System/Random/TF/Gen.hs:173:3-35         3218       2408    0.0    0.0     0.0    0.0
+             tfGenSplit.k'               System.Random.TF.Gen      src/System/Random/TF/Gen.hs:172:3-20         3236         51    0.0    0.0     0.0    0.1
+              mash'                      System.Random.TF.Gen      src/System/Random/TF/Gen.hs:(129,1)-(130,19) 3237         51    0.0    0.0     0.0    0.1
+               mash                      System.Random.TF.Gen      src/System/Random/TF/Gen.hs:(117,1)-(126,29) 3238         51    0.0    0.0     0.0    0.1
+                primitive                Control.Monad.Primitive   Control/Monad/Primitive.hs:94:3-16           3242        102    0.0    0.0     0.0    0.0
+                createBlock256           System.Random.TF.Gen      src/System/Random/TF/Gen.hs:(41,1)-(47,26)   3239         51    0.0    0.1     0.0    0.1
+                 primitive               Control.Monad.Primitive   Control/Monad/Primitive.hs:94:3-16           3240        306    0.0    0.0     0.0    0.0
+                  writeByteArray#        Data.Primitive.Types      Data/Primitive/Types.hs:172:138-209          3241        204    0.0    0.0     0.0    0.0
+          <*>                            Test.QuickCheck.Gen       Test/QuickCheck/Gen.hs:51:3-36               3223          0    0.0    0.0     0.0    0.0
+          return                         Test.QuickCheck.Gen       Test/QuickCheck/Gen.hs:(54,3)-(55,21)        3229          0    0.0    0.0     0.0    0.0
+           return.\                      Test.QuickCheck.Gen       Test/QuickCheck/Gen.hs:55:20                 3230        770    0.0    0.0     0.0    0.0
+        choose                           Test.QuickCheck.Gen       Test/QuickCheck/Gen.hs:115:1-59              3174          0    0.0    0.0     9.1    8.7
+         choose.\                        Test.QuickCheck.Gen       Test/QuickCheck/Gen.hs:115:29-58             3175       2462    0.0    0.0     9.1    8.7
+          choose.\.(...)                 Test.QuickCheck.Gen       Test/QuickCheck/Gen.hs:115:33-53             3176       2462    0.0    0.0     9.1    8.7
+           randomR                       System.Random             System/Random.hs:345:34-61                   3182          0    0.0    0.0     9.1    8.7
+            randomIvalIntegral           System.Random             System/Random.hs:462:1-71                    3183       2462    0.0    1.5     9.1    8.7
+             randomIvalInteger           System.Random             System/Random.hs:(468,1)-(489,76)            3184       2462    0.0    3.2     9.1    7.2
+              randomIvalInteger.f        System.Random             System/Random.hs:(486,8)-(489,76)            3189       4924    0.0    0.3     9.1    3.1
+               randomIvalInteger.f.(...) System.Random             System/Random.hs:488:25-39                   3192       2462    9.1    0.0     9.1    2.4
+                next                     Test.QuickCheck.Random    Test/QuickCheck/Random.hs:(75,3)-(77,30)     3193       2462    0.0    0.0     0.0    2.4
+                 next                    System.Random.TF.Gen      src/System/Random/TF/Gen.hs:176:3-19         3195          0    0.0    0.3     0.0    2.4
+                  tfGenNext'             System.Random.TF.Gen      src/System/Random/TF/Gen.hs:(157,1)-(163,32) 3198       2462    0.0    2.0     0.0    2.2
+                   tfGenNext'.(...)      System.Random.TF.Gen      src/System/Random/TF/Gen.hs:162:3-25         3201       2462    0.0    0.0     0.0    0.2
+                    extract              System.Random.TF.Gen      src/System/Random/TF/Gen.hs:137:1-32         3202       2462    0.0    0.0     0.0    0.2
+                     indexByteArray#     Data.Primitive.Types      Data/Primitive/Types.hs:169:26-138           3208       2462    0.0    0.2     0.0    0.2
+                   tfGenNext'.val        System.Random.TF.Gen      src/System/Random/TF/Gen.hs:162:3-25         3200       2462    0.0    0.0     0.0    0.0
+                   tfGenNext'.val'       System.Random.TF.Gen      src/System/Random/TF/Gen.hs:163:3-32         3199       2462    0.0    0.0     0.0    0.0
+               randomIvalInteger.f.v'    System.Random             System/Random.hs:489:25-76                   3190       2462    0.0    0.3     0.0    0.3
+               randomIvalInteger.f.x     System.Random             System/Random.hs:488:25-39                   3191       2462    0.0    0.0     0.0    0.0
+              randomIvalInteger.(...)    System.Random             System/Random.hs:472:8-36                    3210       2462    0.0    0.0     0.0    0.0
+               genRange                  Test.QuickCheck.Random    Test/QuickCheck/Random.hs:74:3-33            3211       2462    0.0    0.0     0.0    0.0
+                genRange                 System.Random.TF.Gen      src/System/Random/TF/Gen.hs:179:3-30         3212       2462    0.0    0.0     0.0    0.0
+              randomIvalInteger.b        System.Random             System/Random.hs:473:8-54                    3214       2462    0.0    0.5     0.0    0.5
+              randomIvalInteger.genhi    System.Random             System/Random.hs:472:8-36                    3213       2462    0.0    0.0     0.0    0.0
+              randomIvalInteger.genlo    System.Random             System/Random.hs:472:8-36                    3209       2462    0.0    0.0     0.0    0.0
+              randomIvalInteger.k        System.Random             System/Random.hs:482:8-20                    3185       2462    0.0    0.2     0.0    0.2
+              randomIvalInteger.magtgt   System.Random             System/Random.hs:483:8-21                    3186       2462    0.0    0.2     0.0    0.2
+          choose.\.x                     Test.QuickCheck.Gen       Test/QuickCheck/Gen.hs:115:33-53             3215       2462    0.0    0.0     0.0    0.0
+    <*>                                  Test.QuickCheck.Gen       Test/QuickCheck/Gen.hs:51:3-36               3116          0    0.0    0.0     0.0    0.0
+     >>=                                 Test.QuickCheck.Gen       Test/QuickCheck/Gen.hs:(57,3)-(63,5)         3117          0    0.0    0.0     0.0    0.0
+      >>=.\                              Test.QuickCheck.Gen       Test/QuickCheck/Gen.hs:(59,7)-(62,20)        3118         15    0.0    0.0     0.0    0.0
+       >>=.\.(...)                       Test.QuickCheck.Gen       Test/QuickCheck/Gen.hs:61:15-35              3143         15    0.0    0.0     0.0    0.0
+        <*>.\                            Test.QuickCheck.Gen       Test/QuickCheck/Gen.hs:51:28-36              3144         15    0.0    0.0     0.0    0.0
+         fmap                            Test.QuickCheck.Gen       Test/QuickCheck/Gen.hs:(46,3)-(47,29)        3145         15    0.0    0.0     0.0    0.0
+          fmap.\                         Test.QuickCheck.Gen       Test/QuickCheck/Gen.hs:47:20-28              3146         15    0.0    0.0     0.0    0.0
+       >>=.\.m'                          Test.QuickCheck.Gen       Test/QuickCheck/Gen.hs:61:15-35              3142         15    0.0    0.0     0.0    0.0
+       split                             Test.QuickCheck.Random    Test/QuickCheck/Random.hs:(71,3)-(73,38)     3119         15    0.0    0.0     0.0    0.0
+        split                            System.Random.TF.Gen      src/System/Random/TF/Gen.hs:180:3-20         3121          0    0.0    0.0     0.0    0.0
+         tfGenSplit                      System.Random.TF.Gen      src/System/Random/TF/Gen.hs:(166,1)-(173,35) 3140         15    0.0    0.0     0.0    0.0
+          mkTFGen                        System.Random.TF.Gen      src/System/Random/TF/Gen.hs:(133,1)-(134,36) 3167         29    0.0    0.0     0.0    0.0
+          tfGenSplit.bi'                 System.Random.TF.Gen      src/System/Random/TF/Gen.hs:171:3-15         3168         15    0.0    0.0     0.0    0.0
+          tfGenSplit.maxb                System.Random.TF.Gen      src/System/Random/TF/Gen.hs:170:3-11         3141         15    0.0    0.0     0.0    0.0
+          tfGenSplit.b''                 System.Random.TF.Gen      src/System/Random/TF/Gen.hs:173:3-35         3234         14    0.0    0.0     0.0    0.0
+  propDepth                              Main                      AST.hs:(141,1)-(145,39)                      3155          0    0.0    0.0     0.0    0.1
+   cata                                  Data.Functor.Foldable     Data/Functor/Foldable.hs:159:3-43            3156          0    0.0    0.0     0.0    0.1
+    cata.c                               Data.Functor.Foldable     Data/Functor/Foldable.hs:159:20-43           3157          0    0.0    0.0     0.0    0.1
+     propDepth.alg                       Main                      AST.hs:(143,3)-(145,39)                      3231       2462    0.0    0.1     0.0    0.1
