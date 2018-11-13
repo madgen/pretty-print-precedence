@@ -5,6 +5,7 @@
 {-# LANGUAGE DeriveFoldable #-}
 {-# LANGUAGE DeriveTraversable #-}
 {-# LANGUAGE BangPatterns #-}
+{-# LANGUAGE CPP #-}
 
 module Main where
 
@@ -13,11 +14,26 @@ import Prelude hiding ((<>))
 import Data.Functor.Foldable
 import Data.Functor.Foldable.TH
 
-import Text.PrettyPrint
-
 import Test.QuickCheck
 
 import Criterion.Main
+
+#ifndef STRING
+
+import Text.PrettyPrint
+
+#else
+
+type Doc = String
+
+text = id
+
+s1 <> s2  = s1 ++ s2
+s1 <+> s2 = s1 ++ ' ' : s2
+
+parens str = '(' : str ++ ")"
+
+#endif
 
 --------------------------------------------------------------------------------
 -- AST in the spirit of Hutton's Razor
@@ -144,6 +160,23 @@ propDepth = cata alg
   alg (PAndF depth1 depth2) = 1 + max depth1 depth2
   alg (PNotF depth)         = 1 + depth
 
+propDepth' :: Prop -> Int
+propDepth' = go
+  where
+  go PVar{}               = 0
+  go (PAnd child1 child2) = 1 + max (go child1) (go child2)
+  go (PNot child)         = 1 + go child
+
+#if defined(PROFILING)
+
+main :: IO ()
+main = do
+  !prop <- head . filter ((> 50) . propDepth) <$> generate infiniteList
+  putStrLn . render $ {-# SCC vanilla_recursion #-} smartPrint  prop
+  putStrLn . render $ {-# SCC recursion_schemes #-} smartPrint' prop
+
+#elif defined(PROP_DEPTH)
+
 main :: IO ()
 main = do
   !propsNDepths <- take 10
@@ -154,14 +187,26 @@ main = do
   defaultMain $
     flip map (zip [1..] propsNDepths) $ \(id, (depth, prop)) ->
       bgroup (show id ++ '-' : show depth)
-        [ bench "vanilla-recursion" $ whnf smartPrint prop
-        , bench "recursion-schemes" $ whnf smartPrint' prop
+        [ bench "vanilla-propDepth" $ whnf propDepth prop
+        , bench "para-propDepth" $ whnf propDepth prop
         ]
 
-{-
+#else
+
 main :: IO ()
 main = do
-  !prop <- head . filter ((> 50) . propDepth) <$> generate infiniteList
-  putStrLn . render $ {-# SCC vanilla_recursion #-} smartPrint  prop
-  putStrLn . render $ {-# SCC recursion_schemes #-} smartPrint' prop
--}
+  !propsNDepths <- take 5
+                 . filter ((< 200) . fst)
+                 . filter ((> 100) . fst)
+                 . map (\prop -> (propDepth prop, prop))
+               <$> generate infiniteList
+  defaultMain $
+    flip map (zip [1..] propsNDepths) $ \(id, (depth, prop)) ->
+      bgroup (show id ++ '-' : show depth)
+        [ bench "vanilla-smart" $ whnf smartPrint prop
+        , bench "para-smart" $ whnf smartPrint' prop
+        , bench "vanilla-redundant" $ whnf redundantPrint prop
+        , bench "cata-reundant" $ whnf redundantPrint' prop
+        ]
+
+#endif
