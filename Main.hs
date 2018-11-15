@@ -4,6 +4,7 @@
 {-# LANGUAGE DeriveFunctor #-}
 {-# LANGUAGE DeriveFoldable #-}
 {-# LANGUAGE DeriveTraversable #-}
+{-# LANGUAGE PatternSynonyms #-}
 {-# LANGUAGE BangPatterns #-}
 {-# LANGUAGE CPP #-}
 
@@ -41,8 +42,17 @@ parens str = '(' : str ++ ")"
 
 data Prop =
     PVar String
-  | PAnd Prop Prop
-  | PNot Prop
+  | PUnary  Op Prop
+  | PBinary Op Prop Prop
+
+data Op = Neg | And deriving (Eq, Ord)
+
+data SomeOp = NoOp | SomeOp Op deriving (Eq, Ord)
+
+operator :: Prop -> SomeOp
+operator PVar{}           = NoOp
+operator (PUnary  op _)   = SomeOp op
+operator (PBinary op _ _) = SomeOp op
 
 -- Use Template Haskell to generate a version of Prop that is suitable for
 -- recursion schemes.
@@ -52,88 +62,85 @@ makeBaseFunctor ''Prop
 -- Pretty print without recursion schemes
 --------------------------------------------------------------------------------
 
+prettyOp :: Op -> Doc
+prettyOp Neg = "!"
+prettyOp And = "&&"
+
 wrongPrint :: Prop -> Doc
 wrongPrint = go
   where
   go :: Prop -> Doc
-  go (PVar v)             = text v
-  go (PAnd child1 child2) = go child1 <+> "&&" <+> go child2
-  go (PNot child)         = "!" <> go child
+  go (PVar v)                   = text v
+  go (PUnary  op child)         = prettyOp op <> go child
+  go (PBinary op child1 child2) = go child1 <+> prettyOp op <+> go child2
 
 redundantPrint :: Prop -> Doc
 redundantPrint = go
   where
   go :: Prop -> Doc
-  go (PVar v)             = text v
-  go (PAnd child1 child2) = go child1 <+> "&&" <+> go child2
-  go (PNot child)         = "!" <> parens (go child)
+  go (PVar v)                   = text v
+  go (PUnary  op child)         = prettyOp op <> parens (go child)
+  go (PBinary op child1 child2) = go child1 <+> prettyOp op <+> go child2
 
 smartPrint :: Prop -> Doc
 smartPrint = go
   where
   go :: Prop -> Doc
   go (PVar v) = text v
-  go parent@(PAnd child1 child2) =
-    precParens parent child1 (go child1) <+> "&&" <+> precParens parent child2 (go child2)
-  go parent@(PNot child) = "!" <> precParens parent child (go child)
+  go (PUnary  op child) =
+    prettyOp op <> precParens (SomeOp op) (operator child) (go child)
+  go (PBinary op child1 child2) =
+    precParens (SomeOp op) (operator child1) (go child1) <+>
+    prettyOp op <+>
+    precParens (SomeOp op) (operator child2) (go child2)
 
-  precedence :: Prop -> Int
-  precedence PVar{} = 1
-  precedence PNot{} = 2
-  precedence PAnd{} = 3
-
-  precParens :: Prop -> Prop -> Doc -> Doc
-  precParens parent child doc =
-    if precedence parent >= precedence child
-      then doc
-      else parens doc
+precParens :: SomeOp -> SomeOp -> Doc -> Doc
+precParens op1 op2 doc =
+  if op1 >= op2
+    then doc
+    else parens doc
 
 --------------------------------------------------------------------------------
 -- Pretty print with recursion schemes
 --------------------------------------------------------------------------------
 
 -- Erroneously, pretty print without parantheses
-wrongPrint' :: Prop -> Doc
-wrongPrint' = cata alg
+wrongPrintF :: Prop -> Doc
+wrongPrintF = cata alg
   where
   alg :: Base Prop Doc -> Doc
-  alg (PVarF v)         = text v
-  alg (PAndF doc1 doc2) = doc1 <+> "&&" <+> doc2
-  alg (PNotF doc)       = "!" <> doc
+  alg (PVarF v)                = text v
+  alg (PUnaryF op doc)         = prettyOp op <> doc
+  alg (PBinaryF  op doc1 doc2) = doc1 <+> prettyOp op <+> doc2
 
 -- Correctly, pretty print with parantheses but very conservatively
-redundantPrint' :: Prop -> Doc
-redundantPrint' = cata alg
+redundantPrintF :: Prop -> Doc
+redundantPrintF = cata alg
   where
   alg :: Base Prop Doc -> Doc
-  alg (PVarF v)         = text v
-  alg (PAndF doc1 doc2) = doc1 <+> "&&" <+> doc2
-  alg (PNotF doc)       = "!" <> parens doc
+  alg (PVarF v)               = text v
+  alg (PUnaryF op doc)        = prettyOp op <> parens doc
+  alg (PBinaryF op doc1 doc2) = doc1 <+> prettyOp op <+> doc2
 
 -- Correctly, pretty print just the necessary amount of parantheses
-smartPrint' :: Prop -> Doc
-smartPrint' = para alg
+smartPrintF :: Prop -> Doc
+smartPrintF = para alg
   where
   alg :: Base Prop (Prop, Doc) -> Doc
   alg (PVarF v) = text v
-  alg parent@(PAndF (child1, doc1) (child2, doc2)) =
-    precParens parent child1 doc1 <+> "&&" <+> precParens parent child2 doc2
-  alg parent@(PNotF (child, doc)) = "!" <> precParens parent child doc
-
-  precedence :: Base Prop a -> Int
-  precedence PVarF{} = 1
-  precedence PNotF{} = 2
-  precedence PAndF{} = 3
-
-  precParens :: Base Prop a -> Prop -> Doc -> Doc
-  precParens parentF child doc =
-    if precedence parentF >= (precedence . project) child
-      then doc
-      else parens doc
+  alg (PUnaryF  op (child, doc)) =
+    prettyOp op <> precParens (SomeOp op) (operator child) doc
+  alg (PBinaryF op (child1, doc1) (child2, doc2)) =
+    precParens (SomeOp op) (operator child1) doc1 <+>
+    prettyOp op <+>
+    precParens (SomeOp op) (operator child2) doc2
 
 --------------------------------------------------------------------------------
 -- Examples
 --------------------------------------------------------------------------------
+
+pattern PNot p     = PUnary  Neg p
+pattern PAnd p1 p2 = PBinary And p1 p2
 
 -- X && Y
 ex1 :: Prop
@@ -154,18 +161,18 @@ instance Arbitrary Prop where
     , PNot <$> arbitrary ]
 
 propDepth :: Prop -> Int
-propDepth = cata alg
+propDepth = go
   where
-  alg PVarF{}               = 0
-  alg (PAndF depth1 depth2) = 1 + max depth1 depth2
-  alg (PNotF depth)         = 1 + depth
+  go PVar{}                    = 0
+  go (PUnary _ child)         = 1 + go child
+  go (PBinary  _ child1 child2) = 1 + max (go child1) (go child2)
 
-propDepth' :: Prop -> Int
-propDepth' = go
+propDepthF :: Prop -> Int
+propDepthF = cata alg
   where
-  go PVar{}               = 0
-  go (PAnd child1 child2) = 1 + max (go child1) (go child2)
-  go (PNot child)         = 1 + go child
+  alg PVarF{}                    = 0
+  alg (PUnaryF  _ depth)         = 1 + depth
+  alg (PBinaryF _ depth1 depth2) = 1 + max depth1 depth2
 
 #if defined(PROFILING)
 
@@ -173,23 +180,7 @@ main :: IO ()
 main = do
   !prop <- head . filter ((> 50) . propDepth) <$> generate infiniteList
   putStrLn . render $ {-# SCC vanilla_recursion #-} smartPrint  prop
-  putStrLn . render $ {-# SCC recursion_schemes #-} smartPrint' prop
-
-#elif defined(PROP_DEPTH)
-
-main :: IO ()
-main = do
-  !propsNDepths <- take 10
-                 . filter ((< 200) . fst)
-                 . filter ((> 100) . fst)
-                 . map (\prop -> (propDepth prop, prop))
-               <$> generate infiniteList
-  defaultMain $
-    flip map (zip [1..] propsNDepths) $ \(id, (depth, prop)) ->
-      bgroup (show id ++ '-' : show depth)
-        [ bench "vanilla-propDepth" $ whnf propDepth prop
-        , bench "para-propDepth" $ whnf propDepth prop
-        ]
+  putStrLn . render $ {-# SCC recursion_schemes #-} smartPrintF prop
 
 #else
 
@@ -203,10 +194,12 @@ main = do
   defaultMain $
     flip map (zip [1..] propsNDepths) $ \(id, (depth, prop)) ->
       bgroup (show id ++ '-' : show depth)
-        [ bench "vanilla-smart" $ whnf smartPrint prop
-        , bench "para-smart" $ whnf smartPrint' prop
-        , bench "vanilla-redundant" $ whnf redundantPrint prop
-        , bench "cata-reundant" $ whnf redundantPrint' prop
+        [ bench "vanilla-smart"       $ whnf smartPrint prop
+        , bench "para-smart"          $ whnf smartPrintF prop
+        , bench "vanilla-redundant"   $ whnf redundantPrint prop
+        , bench "cata-reundant"       $ whnf redundantPrintF prop
+        , bench "vanilla-propDepth"   $ whnf propDepth prop
+        , bench "cata-propDepth"      $ whnf propDepthF prop
         ]
 
 #endif
