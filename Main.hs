@@ -110,8 +110,8 @@ wrongPrintF = cata alg
   where
   alg :: Base Prop Doc -> Doc
   alg (PVarF v)                = text v
-  alg (PUnaryF op doc)         = prettyOp op <> doc
-  alg (PBinaryF  op doc1 doc2) = doc1 <+> prettyOp op <+> doc2
+  alg (PUnaryF  op doc)        = prettyOp op <> doc
+  alg (PBinaryF op doc1 doc2)  = doc1 <+> prettyOp op <+> doc2
 
 -- Correctly, pretty print with parantheses but very conservatively
 redundantPrintF :: Prop -> Doc
@@ -119,7 +119,7 @@ redundantPrintF = cata alg
   where
   alg :: Base Prop Doc -> Doc
   alg (PVarF v)               = text v
-  alg (PUnaryF op doc)        = prettyOp op <> parens doc
+  alg (PUnaryF  op doc)       = prettyOp op <> parens doc
   alg (PBinaryF op doc1 doc2) = doc1 <+> prettyOp op <+> doc2
 
 -- Correctly, pretty print just the necessary amount of parantheses
@@ -163,8 +163,8 @@ instance Arbitrary Prop where
 propDepth :: Prop -> Int
 propDepth = go
   where
-  go PVar{}                    = 0
-  go (PUnary _ child)         = 1 + go child
+  go PVar{}                     = 0
+  go (PUnary _ child)           = 1 + go child
   go (PBinary  _ child1 child2) = 1 + max (go child1) (go child2)
 
 propDepthF :: Prop -> Int
