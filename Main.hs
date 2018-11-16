@@ -194,12 +194,12 @@ main = do
   defaultMain $
     flip map (zip [1..] propsNDepths) $ \(id, (depth, prop)) ->
       bgroup (show id ++ '-' : show depth)
-        [ bench "vanilla-smart"       $ whnf smartPrint prop
-        , bench "para-smart"          $ whnf smartPrintF prop
-        , bench "vanilla-redundant"   $ whnf redundantPrint prop
-        , bench "cata-reundant"       $ whnf redundantPrintF prop
-        , bench "vanilla-propDepth"   $ whnf propDepth prop
-        , bench "cata-propDepth"      $ whnf propDepthF prop
+        [ bench "vanilla-smart"       $ nf smartPrint prop
+        , bench "para-smart"          $ nf smartPrintF prop
+        , bench "vanilla-redundant"   $ nf redundantPrint prop
+        , bench "cata-reundant"       $ nf redundantPrintF prop
+        , bench "vanilla-propDepth"   $ nf propDepth prop
+        , bench "cata-propDepth"      $ nf propDepthF prop
         ]
 
 #endif
